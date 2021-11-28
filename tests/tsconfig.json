@@ -1,0 +1,13 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+      "baseUrl": "../",
+      "paths": {
+        "@browserless/*": [ "src/*" ]
+      },
+      "types": [ "@types/jest", "@types/node" ]
+    },
+    "include": [
+      "./**/*"
+    ],
+}

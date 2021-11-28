@@ -1,0 +1,12 @@
+
+todo {
+    
+    .todo.title {
+        &.done {
+            text-decoration: line-through;
+        }
+        &.pending {}
+    }
+    .todo.description {}
+    
+}

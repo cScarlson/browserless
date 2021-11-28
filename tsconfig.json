@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "module": "es2020",
+    "target": "es2021",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "downlevelIteration": true,
+    "typeRoots": [
+      "showcase/app/types.d.ts"
+    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": [ "node" ]
+  },
+  "files": ["src/index.ts"],
+  "include": [
+    "src/**/*",
+  ],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,6 @@
+
+<div>
+    <h2>Todos {${data.length}}</h2>
+    <todo *for="let [i, todo] of data" [data]="{todo}" [index]="{i}" value="${{todo}.title}">${data.length}</todo>
+    <h2>...</h2>
+</div>

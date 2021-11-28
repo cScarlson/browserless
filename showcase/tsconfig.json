@@ -1,0 +1,14 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+      "baseUrl": "../",
+      "paths": {
+        "@browserless/*": [ "src/*" ],
+        "@app/*": [ "showcase/app/*" ]
+      }
+    },
+    "include": [
+      "./**/*"
+    ],
+    "files": [ "./main.ts" ]
+}

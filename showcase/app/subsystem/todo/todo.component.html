@@ -1,0 +1,3 @@
+
+<h4 class="todo title ${ { true: 'done', false: 'pending' }[ data.done ] }">Todo (${index}): ${data.title}</h4>
+<p class="todo description">${data.description} + <slot></slot></p>
