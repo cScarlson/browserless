@@ -2,7 +2,7 @@
 import { TSelector, TAnalyze, TBootstrap, TTemplater, TMutator, TNode, IBoot } from './interfaces';
 import { Tree } from './tree';
 
-const settings: Map<string, any> = new Map();
+const settings: Map<string, any> = new Map([ ['sandbox', Object] ]);  // initialize noop-Object/Sandbox
 const texts: Map<string, any> = new Map();
 const comments: Map<string, any> = new Map();
 const attributes: Map<TSelector, any> = new Map();
@@ -14,8 +14,9 @@ const networkbus: EventTarget = new EventTarget();
 const decorators: Set<any> = new Set();
 const mixins: Set<Function> = new Set();
 const mutators: Set<TMutator> = new Set();
+const cleaners: Map<number, Function> = new Map();
 const tree = new Tree({ boot: { selector: 'root' } });
-const nodes: Map<Node, Tree<TNode>> = new Map([ [document, tree] ]);
+const nodes: Map<Node, Tree<TNode>> = new Map();
 const scopes: Map<Node, any> = new Map();
 
 function attach(node: Node, next: TAnalyze): Node {
@@ -70,18 +71,29 @@ function matchRegExp(node: Node, selector: RegExp) {
     }[ node.nodeType ])();
 }
 
-function bootstrap(boot: IBoot<Node>) {
+function bootstrap(boot: IBoot<Node>): IBoot<Node> {
+    var stats = clean();
     var result: IBoot<Node> = [ ...bootstraps ].reduce( (boot: IBoot<Node>, fn: TBootstrap) => fn.call(boot, boot), boot);
     return result;
 }
 
 function create(component: any, node: Node) {
     var Component = component;
+    var Sandbox = settings.get('sandbox');
+    var $ = new Sandbox(node);
     
     return {
         'object': () => ({ ...component }),  // [effectively] create new instance.
-        'function': () => new Component(node)
+        'function': () => new Component($)
     }[ typeof component ]();
+}
+
+function clean(): { nodes: { was: number, is: number } } {
+    var result = { nodes: { was: nodes.size } };
+    var entries = Array.from( nodes.entries() );
+    
+    for(let [node, tree] of entries) cleaners.get(node.nodeType)(node);
+    return { ...result, nodes: { ...result.nodes, is: nodes.size } };
 }
 
 export {
@@ -97,6 +109,7 @@ export {
     decorators,
     mixins,
     mutators,
+    cleaners,
     tree,
     nodes,
     scopes,
@@ -109,4 +122,5 @@ export {
     matchRegExp,
     bootstrap,
     create,
+    clean,
 };

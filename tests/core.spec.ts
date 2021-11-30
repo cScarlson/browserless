@@ -38,6 +38,7 @@ import {
     MOCK_ILLEGALNODE_0,
 } from './mocks';
 
+const MOCK_ELEMENT_BOOT_0 = { selector: 'mock', node: MOCK_ELEMENT_0, component: {}, instance: {}, straps: new Map() };
 
 describe("registrar storage media", () => {
 
@@ -45,8 +46,9 @@ describe("registrar storage media", () => {
         it("should be a Map", () => {
             expect(settings).toBeInstanceOf(Map);
         });
-        it("should be empty", () => {
-            expect(settings.size).toBe(0);
+        it("should NOT be empty", () => {
+            expect(settings.size).toBe(1);
+            expect( settings.get('sandbox') ).toBe(Object);
         });
     });
 
@@ -277,14 +279,14 @@ describe("core function", () => {
     
     describe("bootstrap", () => {
         it("receives an IBoot<Node> and returns an IBoot<Node>", () => {
-            const boot: IBoot<Element> = { selector: 'mock', node: MOCK_ELEMENT_0, component: {}, instance: {}, straps: new Map() };
+            const boot: IBoot<Element> = MOCK_ELEMENT_BOOT_0;
             const res = bootstrap(boot);
             expect(res).toBe(boot);
         });
     });
     
     describe("create", () => {
-        it("receives a component and a node and returns an instance", () => {
+        it("receives a component and an IBoot and returns an instance", () => {
             const component = { random: 'text' };
             const res = create(component, MOCK_ELEMENT_0);
             

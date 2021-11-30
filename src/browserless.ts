@@ -1,5 +1,5 @@
 
-import { TPropertyChangedDetail, TPropertyChange } from './interfaces';
+import { TPropertyChangedDetail, TPropertyChange, IBoot } from './interfaces';
 import {
     settings,
     attributes,
@@ -10,8 +10,11 @@ import {
     decorators,
     mixins,
     mutators,
+    cleaners,
+    nodes,
+    tree,
 } from './core';
-import { attach, execute } from './core';
+import { attach, execute, bootstrap } from './core';
 import { MixinBus } from './mixins';
 import { NodeDecorator } from './decorators';
 import { mountElement, mountAttribute, mountText, mountComment } from './middleware';
@@ -46,8 +49,10 @@ import {
     bootstrapSignalMount,
     verifyBootstrap,
 } from './bootstraps';
+import { cleanElement, cleanAttribute, cleanText, cleanComment } from './cleaners';
 import { LIFECYCLE_EVENTS, subscribe } from './events';
 import { slot, title } from './sdk';
+import { ROUTER_EVENTS, Route } from './route';
 
 const setup = true;
 
@@ -69,12 +74,32 @@ function handlePropertyChanged(e: CustomEvent<TPropertyChangedDetail>) {
     }, (1000 * 0) );
 }
 
+function handleComponentRouted(e: CustomEvent<Route>) {
+    var { Sandbox } = Route;
+    var { type, detail: route } = e;
+    var { component, name } = route;
+    var routelet = document.querySelector(`routelet[name="${name}"]`)  // query for routelet dynamically
+      , routelet = routelet || document.querySelector('routelet:not([name])')
+      , routelet = routelet || document.createElement('routelet')
+      ;
+    var boot: IBoot<Element> = { selector: `routelet[name="${name}"]`, node: routelet, component, instance: {}, straps: new Map() }
+      , boot: IBoot<Element> = <IBoot<Element>>bootstrap(boot)
+      ;
+    var $ = new Sandbox(route);
+    
+    if (ROUTER_EVENTS.onactivated in boot.instance) boot.instance[ROUTER_EVENTS.onactivated]($);
+    // routelet.innerHTML = component['v:template'];
+    // attach(routelet.firstChild, execute);
+}
+
 settings
     .set('components', true)
     .set('attributes', true)
     .set('texts', true)
     .set('comments', true)
-    .set('sandbox', Object)
+    ;
+nodes
+    .set(document, tree)  // initialize for root/parent
     ;
 mixins
     .add(MixinBus)
@@ -127,6 +152,14 @@ attributes
     .set(expressions.BINDING_ONEWAY, { })  // one-way-binding.
     .set(expressions.BINDING_TWOWAY, { })  // two-way-binding.
     ;
+cleaners
+    .set(Node.DOCUMENT_NODE, (node: Document) => nodes)
+    .set(Node.ELEMENT_NODE, cleanElement)
+    .set(Node.ATTRIBUTE_NODE, cleanAttribute)
+    .set(Node.TEXT_NODE, cleanText)
+    .set(Node.COMMENT_NODE, cleanComment)
+    ;
 subscribe(LIFECYCLE_EVENTS.onpropertychanged, handlePropertyChanged);
+Route.subscribe(ROUTER_EVENTS.onroutebootstrap, handleComponentRouted);
 
 export { setup };

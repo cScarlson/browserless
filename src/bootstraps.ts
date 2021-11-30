@@ -42,7 +42,7 @@ function bootstrapSetter(boot: IBoot<Node>): IBoot<Node> {
 function bootstrapSandbox(boot: IBoot<Node>): IBoot<Node> {
     var { selector, node, component, instance, straps } = boot;
     var Sandbox = settings.get('sandbox');
-    var $ = new Sandbox(boot);
+    var $ = new Sandbox(node);
     var has = (LIFECYCLE_EVENTS.onsandbox in instance);
     
     if (has) instance[LIFECYCLE_EVENTS.onsandbox]($);
@@ -352,6 +352,7 @@ function bootstrapSignalMount(boot: IBoot<Node>): IBoot<Node> {
 function verifyBootstrap(boot: IBoot<Node>): IBoot<Node> {
     console.log('%c Bootstrap verification complete!', 'color: green');
     if (false) console.log('%c Bootstrap verification completed with errors', 'color: red');
+    if (boot.instance === Object) console.warn('WFT?...', boot);
     return boot;
 }
 

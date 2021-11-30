@@ -35,6 +35,7 @@ class EventManager {
     connect(receiver: any) {
         var { node, types } = this;
         
+        if (receiver instanceof Element) throw new Error('WTF?...');
         this.receiver = receiver;
         this.disconnect();
         types.forEach( (type) => node.addEventListener(type, this.handleEvent, true) );
