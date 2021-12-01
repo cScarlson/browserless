@@ -1,6 +1,7 @@
 
 import { TPropertyChange } from '@browserless/interfaces';
 import { LIFECYCLE_EVENTS, publish } from '@browserless/events';
+// local
 import template from './app.component.html';
 import './app.component.scss';
 

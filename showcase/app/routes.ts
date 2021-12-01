@@ -1,98 +1,16 @@
 
 import { ROUTER_EVENTS, Route } from '@browserless/route';
 import { app } from './app.component';
-
-class DefaultHandler {
-    static outlet: string = 'routelet[name="app"]';
-    
-    constructor(x) {
-        console.log(`@DefaultHandler`, x);
-    }
-    
-    [ROUTER_EVENTS.onactivated](route: Route) {
-        console.log(ROUTER_EVENTS.onactivated, route);
-    }
-    
-}
-
-class NotFound {
-    
-    constructor(route: Route) {
-        console.log('NotFound');
-    }
-    
-}
-
-var todos = [
-    { done:  true, title: "Element Components", description: "a^2 + b^2 = c^2", tags: [] },
-];
-class Dashboard {
-    ['v:template'] = '<h1>Yeay!</h1><todos [data]="todos"></todos>';
-    todos: any[] = todos;
-    constructor(x) {
-        console.log('Dashboard', x);
-    }
-    
-}
-class User {
-    
-    constructor(route: Route) {
-        console.log('User');
-    }
-    
-}
-class UserSettings {
-    
-    constructor(route: Route) {
-        console.log('UserSettings');
-    }
-    
-}
-class Projects {
-    
-    constructor(route: Route) {
-        console.log('Projects');
-    }
-    
-}
-class Project {
-    
-    constructor(route: Route) {
-        console.log('Project');
-        console.log('...', route.get('id'));
-    }
-    
-}
-class ProjectHistory {
-    
-    constructor(route: Route) {
-        console.log('ProjectHistory');
-    }
-    
-}
-class ProjectHistoryDetails {
-    
-    constructor(route: Route) {
-        console.log('ProjectHistoryDetails');
-    }
-    
-}
-class ProjectHistoryDetailsItem {
-    
-    constructor(route: Route) {
-        console.log('ProjectHistoryDetailsItem');
-        console.log('...', route.get('pId'), route.get('id'));
-    }
-    
-}
+import { welcome } from './subsystem/welcome/welcome.component';
+import { playground } from './subsystem/playground/playground.component';
 
 const routes = [
     {
-        pathname: '', name: 'HOME', component: app, data: {}, children: [
+        pathname: '', name: 'HOME', title: "Home", component: welcome, data: {}, children: [
             // {
-            //     pathname: 'user', name: 'USER', component: User, data: {}, children: [
-            //         { pathname: 'settings', name: 'USER:SETTINGS', component: UserSettings, data: {}, children: [ ] },
-            //         { pathname: '404', name: 'USER:SETTINGS:ERROR:404', component: NotFound, data: {}, children: [ ] },  // caught because pathname has to be #/user/[undefined]
+            //     pathname: 'dev/playground', name: 'PLAYGROUND', component: playground, data: {}, children: [
+            //         // { pathname: 'settings', name: 'USER:SETTINGS', component: UserSettings, data: {}, children: [ ] },
+            //         // { pathname: '404', name: 'USER:SETTINGS:ERROR:404', component: NotFound, data: {}, children: [ ] },  // caught because pathname has to be #/user/[undefined]
             //     ]
             // },
             // { pathname: '404', name: 'USER:ERROR:404', component: NotFound, data: {}, children: [ ] },  // [not] caught [here] because pathname has to be #/user/[undefined] and "USER:SETTINGS:ERROR:404" catches it
@@ -121,5 +39,6 @@ const routes = [
     // },
     // { pathname: '404', name: 'ERROR:404', component: NotFound, data: {}, children: [ ] },
 ];
+const root = new Route(routes);
 
-export { routes };
+export { routes, root };

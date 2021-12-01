@@ -1,0 +1,7 @@
+
+<ul class="menu list">
+    <li class="menu item" *for="let [i, item] of items" *if="items.length">
+        <a href="#">${{item}.title}</a>
+    </li>
+    <li class="menu item" *if="!!items.length">THE IF</li>
+</ul>

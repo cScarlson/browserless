@@ -71,6 +71,7 @@ class Route extends Params {  // extend Map for route-snapshot parameters.
     public component: any = Object;
     public pathname: string = '';
     public redirect: boolean = false;
+    public title: string = '';
     public name: string = '';
     public data: any = { };
     public id: string = '';
@@ -91,7 +92,7 @@ class Route extends Params {  // extend Map for route-snapshot parameters.
         super();
         if (options instanceof Array) return new Route({ name: 'ROOT', pathname: '', component: Object, children: options }, this);  // if its an Array, create a root with options as its children.
         var options = { ...this, ...options };  // use defaults.
-        var { component, pathname, redirect, name, data, children = [] } = options;  // ensure defaults.
+        var { component, pathname, redirect, title, name, data, children = [] } = options;  // ensure defaults.
         var parent = parent || this;  // if not provided, assume root.
         var $namespaces = new Set([ ...parent.id.split('/'), pathname ]);  // spread over Set to ensure no duplicates.
         var namespaces = Array.from($namespaces);  // convert back to Array
@@ -110,6 +111,7 @@ class Route extends Params {  // extend Map for route-snapshot parameters.
         this.component = component;
         this.pathname = pathname;
         this.redirect = redirect;
+        this.title = title
         this.name = name;
         this.data = data;
         this.id = id;

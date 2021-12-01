@@ -2,7 +2,7 @@
 import { TSelector, TAnalyze, TBootstrap, TTemplater, TMutator, TNode, IBoot } from './interfaces';
 import { Tree } from './tree';
 
-const settings: Map<string, any> = new Map([ ['sandbox', Object] ]);  // initialize noop-Object/Sandbox
+const settings: Map<string, any> = new Map([ ['sandbox', Object] ]);  // initialize noop-Object/Sandbox (tests fail withou it).
 const texts: Map<string, any> = new Map();
 const comments: Map<string, any> = new Map();
 const attributes: Map<TSelector, any> = new Map();
@@ -14,7 +14,7 @@ const networkbus: EventTarget = new EventTarget();
 const decorators: Set<any> = new Set();
 const mixins: Set<Function> = new Set();
 const mutators: Set<TMutator> = new Set();
-const cleaners: Map<number, Function> = new Map();
+const cleaners: Map<number, Function> = new Map([ [Node.DOCUMENT_NODE, (node: Document) => nodes] ]);  // init w/base doc cleaner (tests fail withou it).
 const tree = new Tree({ boot: { selector: 'root' } });
 const nodes: Map<Node, Tree<TNode>> = new Map();
 const scopes: Map<Node, any> = new Map();
@@ -88,12 +88,10 @@ function create(component: any, node: Node) {
     }[ typeof component ]();
 }
 
-function clean(): { nodes: { was: number, is: number } } {
-    var result = { nodes: { was: nodes.size } };
+function clean(): { nodes: number } {
     var entries = Array.from( nodes.entries() );
-    
     for(let [node, tree] of entries) cleaners.get(node.nodeType)(node);
-    return { ...result, nodes: { ...result.nodes, is: nodes.size } };
+    return { nodes: nodes.size };
 }
 
 export {

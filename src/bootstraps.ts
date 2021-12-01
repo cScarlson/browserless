@@ -10,7 +10,7 @@ import {
     nodes,
     scopes,
 } from './core';
-import { create } from './core';
+import { create, attach, execute } from './core';
 import { set, findParentTreeNode, interpolate } from './utilities';
 import { Tree } from './tree';
 import { ComponentProxyHandler, MethodProxyHandler } from './decorators';
@@ -314,8 +314,10 @@ function bootstrapElementRender(boot: IBoot<Element>): IBoot<Element> {
     
     function render() {
         var { ['v:proxy']: proxy } = instance;
+        
         events.disconnect();
         node.innerHTML = hydrate({ ...instance, ...proxy });
+        attach(node.firstChild, execute);
     }
     
     return boot;

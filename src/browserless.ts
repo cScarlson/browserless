@@ -20,7 +20,9 @@ import { NodeDecorator } from './decorators';
 import { mountElement, mountAttribute, mountText, mountComment } from './middleware';
 import {
     templateRepeatCloseTag,
-    templateRepeatSelfClosing
+    templateRepeatSelfClosing,
+    templateIfCloseTag,
+    templateIfSelfClosing,
 } from './templaters';
 import {
     mutateHTMLEntities
@@ -88,8 +90,8 @@ function handleComponentRouted(e: CustomEvent<Route>) {
     var $ = new Sandbox(route);
     
     if (ROUTER_EVENTS.onactivated in boot.instance) boot.instance[ROUTER_EVENTS.onactivated]($);
-    // routelet.innerHTML = component['v:template'];
-    // attach(routelet.firstChild, execute);
+    routelet.innerHTML = component['v:template'];
+    attach(routelet.firstChild, execute);
 }
 
 settings
@@ -114,6 +116,8 @@ middleware
     .add(mountComment)
     ;
 templaters
+    .add(templateIfCloseTag)
+    .add(templateIfSelfClosing)
     .add(templateRepeatCloseTag)
     .add(templateRepeatSelfClosing)
     ;
@@ -153,7 +157,6 @@ attributes
     .set(expressions.BINDING_TWOWAY, { })  // two-way-binding.
     ;
 cleaners
-    .set(Node.DOCUMENT_NODE, (node: Document) => nodes)
     .set(Node.ELEMENT_NODE, cleanElement)
     .set(Node.ATTRIBUTE_NODE, cleanAttribute)
     .set(Node.TEXT_NODE, cleanText)

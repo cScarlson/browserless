@@ -279,7 +279,7 @@ describe("core function", () => {
     
     describe("bootstrap", () => {
         it("receives an IBoot<Node> and returns an IBoot<Node>", () => {
-            const boot: IBoot<Element> = MOCK_ELEMENT_BOOT_0;
+            const boot: IBoot<Element> = MOCK_ELEMENT_BOOT_0;;
             const res = bootstrap(boot);
             expect(res).toBe(boot);
         });

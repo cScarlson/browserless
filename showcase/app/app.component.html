@@ -1,15 +1,13 @@
 
 <div class="app container">
-    <header>
-        <h1><slot></slot> ${title}</h1>
+    <header class="app header">
+        <h1 class="header title">${title}</h1>
+        <div class="header subheader">
+            <menu></menu>
+        </div>
     </header>
     <main>
-        <input [(value)]="title" />
-        <button type="button" (click)="handleClick($event, title)">Change Title</button>
-        <!-- <todo *for="let [i, todo] of todos" [data]="{todo}" [index]="{i}" value="${{todo}.title}"></todo> --> <!-- <-- uses "symbols" ("{todo}") -->
-        <todos [data]="todos"></todos>
+        <routelet></routelet>
     </main>
-    <footer>
-        <slot name="footer"></slot>
-    </footer>
+    <footer class="app footer"></footer>
 </div>
