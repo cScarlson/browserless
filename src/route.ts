@@ -90,7 +90,7 @@ class Route extends Params {  // extend Map for route-snapshot parameters.
     
     constructor(public options: any = {}, parent?: Route) {
         super();
-        if (options instanceof Array) return new Route({ name: 'ROOT', pathname: '', component: Object, children: options }, this);  // if its an Array, create a root with options as its children.
+        if (options instanceof Array) return new Route({ name: 'ROOT', pathname: '', title: "Routes", component: Object, children: options }, this);  // if its an Array, create a root with options as its children.
         var options = { ...this, ...options };  // use defaults.
         var { component, pathname, redirect, title, name, data, children = [] } = options;  // ensure defaults.
         var parent = parent || this;  // if not provided, assume root.
@@ -108,6 +108,7 @@ class Route extends Params {  // extend Map for route-snapshot parameters.
         var descendents = [ nextChild ];  // use for children if !!more.length
         
         if (more.length) return new Route({ ...options, pathname: segment, component: Object, children: descendents }, parent);  // if `more`, use single next segment and children and default component to Object for noop. Do not proceed.
+        // if (name === 'ROOT') id = '^';  // ensure ROOT is different from implemented empty "" pathname so that register/merge does not fail.
         this.component = component;
         this.pathname = pathname;
         this.redirect = redirect;

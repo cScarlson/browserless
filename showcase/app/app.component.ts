@@ -2,6 +2,7 @@
 import { TPropertyChange } from '@browserless/interfaces';
 import { LIFECYCLE_EVENTS, publish } from '@browserless/events';
 // local
+import { routes, root } from './routes';
 import template from './app.component.html';
 import './app.component.scss';
 
@@ -39,9 +40,10 @@ export const app = {
     ['v:settings']: new Map([ ['noautorender', false] ]),
     ['v:template']: template,
     todos,
+    routes,
     title: 'App Component',
     [LIFECYCLE_EVENTS.oninit]() {
-        console.log('@app onInit');
+        console.log('@app onInit', routes, root);
         // setTimeout( () => this.title = 'the Browserless Framework', (1000 * 2) );
         // setTimeout( () => this.todos = [ ...this.todos, { title: "More Documentation", description: "a^2 + b^2 = c^2" } ], (1000 * 3) );
         // setTimeout( () => publish(LIFECYCLE_EVENTS.onpagetitlechanged, this.title), (1000 * 3) );

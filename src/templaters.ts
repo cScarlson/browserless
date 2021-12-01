@@ -26,7 +26,7 @@ function templateRepeat(exp: RegExp, template: string, data: any): string {
 }
 
 function templateRepeatCloseTag(template: string, data: any): string {
-    var exp = /<(\w+)\s+.*(\*for="(let\s(\[\w+,\s\w+\])\sof\s([^"]+))")(\s*.*=".*")*>\s*.*\s*<\/\1>/m;
+    var exp = /<(\w+)\s+.*(\*for="(let\s(\[\w+,\s\w+\])\sof\s([^"]+))")(\s*.*=".*")*>(\s*.*\s*)*?<\/\1>/m;
     return templateRepeat(exp, template, data);
 }
 
@@ -46,7 +46,7 @@ function templateIf(exp: RegExp, template: string, data: any): string {
     }
     
     if (!matching) return template;  // eventually stops here.
-    replacement = (new Function('cb', ` with (this) return cb(!!${expression}); `)).call(data, callback);
+    replacement = (new Function('cb', ` with (this) return cb(!!(${expression})); `)).call(data, callback);
     
     if (replacement !== template) return templateIf(exp, replacement, data);
     return template;

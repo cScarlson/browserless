@@ -7,12 +7,12 @@ import { playground } from './subsystem/playground/playground.component';
 const routes = [
     {
         pathname: '', name: 'HOME', title: "Home", component: welcome, data: {}, children: [
-            // {
-            //     pathname: 'dev/playground', name: 'PLAYGROUND', component: playground, data: {}, children: [
-            //         // { pathname: 'settings', name: 'USER:SETTINGS', component: UserSettings, data: {}, children: [ ] },
-            //         // { pathname: '404', name: 'USER:SETTINGS:ERROR:404', component: NotFound, data: {}, children: [ ] },  // caught because pathname has to be #/user/[undefined]
-            //     ]
-            // },
+            {
+                pathname: 'dev/playground', name: 'PLAYGROUND', title: "Playground", component: playground, data: {}, children: [
+                    { pathname: 'test', name: 'PLAYGROUND:TEST', title: "PG Test", component: { ['v:template']: `<h1>PG-TEST</h1>` }, data: {}, children: [ ] },
+                    // { pathname: '404', name: 'USER:SETTINGS:ERROR:404', component: NotFound, data: {}, children: [ ] },  // caught because pathname has to be #/user/[undefined]
+                ]
+            },
             // { pathname: '404', name: 'USER:ERROR:404', component: NotFound, data: {}, children: [ ] },  // [not] caught [here] because pathname has to be #/user/[undefined] and "USER:SETTINGS:ERROR:404" catches it
         ]
     },

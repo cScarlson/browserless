@@ -1,13 +1,14 @@
 
 import { LIFECYCLE_EVENTS } from '@browserless/events';
 // local
-import { routes, root } from '@app/routes';
 import template from './menu.component.html';
+import './menu.component.scss';
 
 export const menu = {
     ['v:template']: template,
-    items: routes,
+    parent: '',
+    items: [ ],
     [LIFECYCLE_EVENTS.oninit]() {
-        console.log('@menu');
+        console.log('@menu', this.items);
     }
 };
