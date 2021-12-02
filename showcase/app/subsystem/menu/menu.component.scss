@@ -1,12 +1,30 @@
 
 menu {
+    margin: 0;
     padding: 0;
-    padding-left: 4px;
+    
+    menu {
+        border-left: dashed 1px black;
+        margin-left: 8px;
+    }
     
     .menu.list {
         margin: 0;
         padding: 0;
         list-style: none;
+        
+        .menu.item {
+            // border: solid 1px peru;
+            
+            .item.control {
+                // border: solid 1px orangered;
+                display: block;
+                padding: 8px;
+                text-decoration: none;
+            }
+            
+        }
+        
     }
     
 }

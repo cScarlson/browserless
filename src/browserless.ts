@@ -90,8 +90,6 @@ function handleComponentRouted(e: CustomEvent<Route>) {
     var $ = new Sandbox(route);
     
     if (ROUTER_EVENTS.onactivated in boot.instance) boot.instance[ROUTER_EVENTS.onactivated]($);
-    // routelet.innerHTML = component['v:template'];
-    // attach(routelet.firstChild, execute);
 }
 
 settings

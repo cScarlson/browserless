@@ -317,7 +317,7 @@ function bootstrapElementRender(boot: IBoot<Element>): IBoot<Element> {
         
         events.disconnect();
         node.innerHTML = hydrate({ ...instance, ...proxy });
-        // attach(node.firstChild, execute);
+        attach(node.firstChild, execute);
     }
     
     return boot;

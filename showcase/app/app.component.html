@@ -2,11 +2,10 @@
 <div class="app container">
     <header class="app header">
         <h1 class="header title">${title}</h1>
-        <div class="header subheader">
-            <menu [items]="routes"></menu>
-        </div>
     </header>
-    <main>
+    <header class="app subheader"></header>
+    <main class="app body">
+        <menu class="navigation" [items]="routes"></menu>
         <routelet></routelet>
     </main>
     <footer class="app footer"></footer>

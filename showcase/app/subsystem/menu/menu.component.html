@@ -1,8 +1,7 @@
 
 <ul class="menu list">
     <li class="menu item" *for="let [i, item] of items">
-        <a href="#${parent}/${{item}.pathname}">${{item}.name}: ${{item}.title}</a>
-        <menu [items]="[ ...{item}.children ]" [parent]="{item}.pathname ? '/' + {item}.pathname : ''"></menu>
+        <a class="item control" href="#${parent}/${{item}.pathname}">${{item}.title}</a>
+        <menu [items]="[ ...{item}.children ]" [parent]="parent && {item}.pathname ? parent + '/' + {item}.pathname :{item}.pathname ? '/' + {item}.pathname : ''"></menu>
     </li>
-    <li class="menu item" *if="true">THE IF (true)</li>
 </ul>

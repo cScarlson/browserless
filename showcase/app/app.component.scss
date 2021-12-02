@@ -1,11 +1,50 @@
 
+$header-height: 40px;
+
 app {
     width: auto;
     height: auto;
 
     .app.container {
+        border: solid 1px tomato;
         background-color: #f8f8f8;
-        border: solid 1px teal;
+        
+        .app.header {
+            border: solid 1px orangered;
+            position: fixed;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: $header-height;
+            background-color: rgba(255, 255, 255, 0.8);
+            
+            .header.title {
+                border: solid 1px teal;
+                max-width: max-content;
+                margin: 0;
+            }
+        }
+        .app.body {
+            display: flex;
+            padding: 0;
+            padding-top: $header-height;
+            
+            .navigation {
+                // border: solid 1px cyan;
+                position: sticky;
+                top: $header-height;
+                width: max-content;
+                min-width: 160px;
+                max-width: 230px;
+                height: min-content;
+                margin-right: 8px;
+            }
+            
+        }
+        .app.footer {}
+        
     }
     
 }

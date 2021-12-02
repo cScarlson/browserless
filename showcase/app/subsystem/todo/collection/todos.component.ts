@@ -1,12 +1,12 @@
 
 import { LIFECYCLE_EVENTS } from '@browserless/events';
+// local
+import { todos } from './todos';
 import template from './todos.component.html';
 
-const todo = { done:  true, title: "Element Components", description: "a^2 + b^2 = c^2", tags: [] };
-
-class TodosComponent {
+const TodosComponent = new (class TodosComponent {
     public ['v:template']: string = template;
-    public data: any[] = [ ];
+    public data: any[] = todos;
     
     constructor($: any) {
         this[LIFECYCLE_EVENTS.oninit] = this.handleInit;
@@ -22,12 +22,6 @@ class TodosComponent {
         // console.log('TodosComponent.mount', this.data);
     }
     
-}
-
-// const TodosComponent = {
-//     ['v:template']: template,
-//     todo,
-//     data: [ ],
-// };
+})({})
 
 export { TodosComponent };

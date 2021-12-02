@@ -1,5 +1,5 @@
 
-function templateRepeat(exp: RegExp, template: string, data: any): string {
+function templateRepeatX(exp: RegExp, template: string, data: any): string {
     var matching = exp.test(template);
     var [ element = '', tagName = '', property = '', value = '', vars = '', datum = '' ] = template.match(exp) || [ ];
     var [ full, indexName, itemName ] = /^\[(\w+),\s*(\w+)\]/.exec(vars) || [ ];
@@ -17,13 +17,45 @@ function templateRepeat(exp: RegExp, template: string, data: any): string {
     }
     
     if (!matching) return template;  // eventually stops here.
+    console.log('WTF?...', template);
     (new Function('cb', `
         with (this) for (${value}.entries()) cb( ...[].concat(${vars}) );
     `)).call(data, callback);
     template = template.replace( element, [...elements].join('') );
     
     return templateRepeat(exp, template, data);  // repeat for possible remaining repeats.
+    // return template;
 }
+
+function templateRepeat(exp: RegExp, template: string, data: any): string {
+    if ( !/\*for/.test(template) ) return template;
+    var container = prepare(template);
+    var repeater = container.querySelector('[_for]') || document.createElement('div');
+    var repeaterHTML = repeater.outerHTML;
+    var [ property, value, vars, indexName, datumName, list ] = /_for="(let\s(\[(\w+),\s*(\w+)\])\sof\s([^"]+))"/.exec(repeaterHTML) || [];
+    var items = (new Function(`with (this) return ${list}`)).call(data);
+    var elements = items.reduce(reduce, '');
+    
+    function prepare(template: string): HTMLDivElement {
+        templateRepeat.container.innerHTML = template.replace('*for', '_for');  // legalize name for selection. only replace first instance of "*for".
+        return templateRepeat.container;
+    }
+    
+    function reduce(copies: string, subject: string, i: number): string {
+        var groomed = repeaterHTML
+          , groomed = groomed.replace(property, `[${datumName}]="${list}[${i}]" [${indexName}]="${i}"`)
+          , groomed = groomed.replaceAll(`{${datumName}}`, `${list}[${i}]`)
+          , groomed = groomed.replaceAll(`{${indexName}}`, `${i}`)
+          ;
+        return `${copies}\n${groomed}`;
+    }
+    
+    repeater.outerHTML = elements;  // replace single element with multiple.
+    template = templateRepeat.container.outerHTML;
+    
+    return templateRepeat(exp, template, data);
+}
+templateRepeat.container = document.createElement('div');
 
 function templateRepeatCloseTag(template: string, data: any): string {
     var exp = /<(\w+)\s+.*(\*for="(let\s(\[\w+,\s\w+\])\sof\s([^"]+))")(\s*.*=".*")*>(\s*.*\s*)*?<\/\1>/m;

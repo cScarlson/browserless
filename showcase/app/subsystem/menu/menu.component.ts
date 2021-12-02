@@ -9,6 +9,6 @@ export const menu = {
     parent: '',
     items: [ ],
     [LIFECYCLE_EVENTS.oninit]() {
-        console.log('@menu', this.items);
+        // console.log('@menu', this.items);
     }
 };
