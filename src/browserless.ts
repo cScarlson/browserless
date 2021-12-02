@@ -19,8 +19,7 @@ import { MixinBus } from './mixins';
 import { NodeDecorator } from './decorators';
 import { mountElement, mountAttribute, mountText, mountComment } from './middleware';
 import {
-    templateRepeatCloseTag,
-    templateRepeatSelfClosing,
+    templateRepeat,
     templateIfCloseTag,
     templateIfSelfClosing,
 } from './templaters';
@@ -114,8 +113,7 @@ middleware
     .add(mountComment)
     ;
 templaters
-    .add(templateRepeatCloseTag)
-    .add(templateRepeatSelfClosing)
+    .add(templateRepeat)
     .add(templateIfCloseTag)
     .add(templateIfSelfClosing)
     ;
