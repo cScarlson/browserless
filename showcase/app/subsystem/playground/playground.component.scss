@@ -1,0 +1,24 @@
+
+* {
+    scroll-behavior: smooth;
+}
+
+.playground.container {
+    
+    .playground.header {
+        padding-top: 40px;
+    }
+    
+    [id^="/dev/playground"] {
+        visibility: hidden;
+        &:target {
+            visibility: visible;
+        }
+    }
+    
+    forms[playground] {
+        display: block;
+        padding-top: 40px;
+    }
+    
+}

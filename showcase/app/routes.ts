@@ -21,7 +21,11 @@ const routes = [
         ]
     },
     { pathname: 'dev/todos', name: 'DEV:TODOS', title: "Todos", component: TodosComponent, data: {}, children: [] },
-    { pathname: 'dev/playground', name: 'PLAYGROUND', title: "Playground", component: playground, data: {}, children: [] },
+    {
+        pathname: 'dev/playground', name: 'PLAYGROUND', title: "Playground", component: playground, data: {}, children: [
+            { pathname: 'forms', name: 'PLAYGROUND:FORMS', title: "Forms", component: playground, data: {}, children: [] },
+        ]
+    },
     // {
     //     pathname: 'projects', name: 'PROJECTS', component: Projects, data: {}, children: [
     //         {

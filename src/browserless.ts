@@ -20,8 +20,8 @@ import { NodeDecorator } from './decorators';
 import { mountElement, mountAttribute, mountText, mountComment } from './middleware';
 import {
     templateRepeat,
-    templateIfCloseTag,
-    templateIfSelfClosing,
+    templateIf,
+    templateCleanParser,
 } from './templaters';
 import {
     mutateHTMLEntities
@@ -114,8 +114,8 @@ middleware
     ;
 templaters
     .add(templateRepeat)
-    .add(templateIfCloseTag)
-    .add(templateIfSelfClosing)
+    .add(templateIf)
+    .add(templateCleanParser)
     ;
 mutators
     .add(mutateHTMLEntities)

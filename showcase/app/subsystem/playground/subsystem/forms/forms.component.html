@@ -1,0 +1,48 @@
+
+<form class="playground forms" (submit)="handleSubmission($event)">
+    <h1>Forms</h1>
+    
+    <fieldset>
+        <legend>input[type="*"]</legend>
+        <label>
+            <div>input[type="text"]: ${text}</div>
+            <input type="text" [(value)]="text" />
+        </label>
+        <label>
+            <div>input[type="date"]: ${date}</div>
+            <input type="date" [(value)]="date" />
+        </label>
+        <label>
+            <div>input[type="checkbox"]: ${checkbox}</div>
+            <input type="checkbox" [(value)]="checkbox" />
+        </label>
+        <label>
+            <div>input[type="radio"]: ${radio}</div>
+            <br />
+            <label *for="let [i, option] of options">
+                <div>${{option}.label}</div>
+                <input type="radio" name="radiogroups" [(value)]="{option}" />
+            </label>
+        </label>
+    </fieldset>
+    
+    <fieldset>
+        <legend>textarea</legend>
+        <label>
+            <div>Value: ${textarea}</div>
+            <textarea [(value)]="textarea"></textarea>
+        </label>
+    </fieldset>
+    
+    <fieldset>
+        <legend>select box</legend>
+        <label>
+            <div>select:not([mutiple]): ${select.id} / ${select.label}</div>
+            <select [(value)]="select">
+                <option [value]="{ id: -1, label: 'Please select an option...' }" selected disabled>Please select an option...</option>
+                <option [value]="{option}" *for="let [i, option] of options">${{option}.label}</option>
+            </select>
+        </label>
+    </fieldset>
+    
+</form>
