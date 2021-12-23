@@ -3,6 +3,32 @@
     <h1>Forms</h1>
     
     <fieldset>
+        <legend>textarea</legend>
+        <label>
+            <div>Value: ${textarea}</div>
+            <textarea [(value)]="textarea"></textarea>
+        </label>
+    </fieldset>
+    
+    <fieldset>
+        <legend>select box</legend>
+        <label>
+            <div>select:not([multiple]): ${select}</div>
+            <select [(value)]="select">
+                <option [value]="-1" selected disabled>Please select an option...</option>
+                <option [value]="{option}.id" *for="let [i, option] of options">${{option}.label}</option>
+            </select>
+        </label>
+        <label>
+            <div>select[multiple]: ${multiple}</div>
+            <select [(value)]="multiple" multiple (change)="handleMultiple($event)">
+                <option [value]="-1" selected disabled>Please select an option...</option>
+                <option [value]="{option}.id" *for="let [i, option] of options">${{option}.label}</option>
+            </select>
+        </label>
+    </fieldset>
+    
+    <fieldset>
         <legend>input[type="*"]</legend>
         <label>
             <div>input[type="text"]: ${text}</div>
@@ -14,34 +40,15 @@
         </label>
         <label>
             <div>input[type="checkbox"]: ${checkbox}</div>
-            <input type="checkbox" [(value)]="checkbox" />
+            <input type="checkbox" [(checked)]="checkbox" />
         </label>
         <label>
             <div>input[type="radio"]: ${radio}</div>
             <br />
             <label *for="let [i, option] of options">
                 <div>${{option}.label}</div>
-                <input type="radio" name="radiogroups" [(value)]="{option}" />
+                <input type="radio" name="radiogroups" [value]="{option}.id" [checked]="{option}.id === radio" (change)="handleRadio($event)" />
             </label>
-        </label>
-    </fieldset>
-    
-    <fieldset>
-        <legend>textarea</legend>
-        <label>
-            <div>Value: ${textarea}</div>
-            <textarea [(value)]="textarea"></textarea>
-        </label>
-    </fieldset>
-    
-    <fieldset>
-        <legend>select box</legend>
-        <label>
-            <div>select:not([mutiple]): ${select.id} / ${select.label}</div>
-            <select [(value)]="select">
-                <option [value]="{ id: -1, label: 'Please select an option...' }" selected disabled>Please select an option...</option>
-                <option [value]="{option}" *for="let [i, option] of options">${{option}.label}</option>
-            </select>
         </label>
     </fieldset>
     

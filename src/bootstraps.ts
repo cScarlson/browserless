@@ -209,28 +209,45 @@ var expressions: any = {
         (new Function('exe', `with (this) exe(${property})`)).call(source, exe);
         
         function exe(value: any) {
+            ownerElement[key] = value;
             ownerElement.setAttribute(key, value);  // set on ownerElement so that registered-elements' proxy-handler getter can return it (see rendering bootstrap and attach). use setAttribute so that a selector can be used to refocus the input.
             ownerElement.addEventListener('input', handleChange as EventListener, false);
         }
         
         function handleChange(e: InputEvent) {
             var { target } = e;
-            var { [key]: data } = <any>target;
+            var { [key]: data, type, tagName, selectionStart } = <any>target;
             var element = <HTMLInputElement>target;
             var selector = `[${key}="${data}"]`;
+            var handler = `handle:${tagName}:${type}`;
             
             if (noautorender) return;
             source['v:set'](property, data);
-            setCaretPosition( source['v:node'].querySelector(selector), element.selectionStart );
-        }
-        
-        function setCaretPosition(node: HTMLInputElement, position: number) {
-            node.focus();
-            node.selectionStart = position;
+            source['v:node'].querySelector(selector).replaceWith(element);  // preserves textareas' resize dimensions (for instance).
+            element.focus();
+            if (handler in expressions) expressions[handler](element, selectionStart);
         }
         
         return boot;
     },
+    
+    [`handle:INPUT:text`](node: HTMLInputElement, position: number) {
+        node.selectionStart = position;
+    },
+    
+    [`handle:TEXTAREA:textarea`](node: HTMLInputElement, position: number) {
+        node.selectionStart = position;
+    },
+    
+    [`handle:INPUT:date`](node: HTMLInputElement, position: number) {},
+    
+    [`handle:INPUT:checkbox`](node: HTMLInputElement, position: number) {},
+    
+    [`handle:INPUT:radio`](node: HTMLInputElement, position: number) {},
+    
+    [`handle:SELECT:select-one`](node: HTMLInputElement, position: number) {},
+    
+    [`handle:SELECT:select-multiple`](node: HTMLInputElement, position: number) {},
     
 };
 

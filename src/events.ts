@@ -29,13 +29,13 @@ class EventManager {
     }
     
     static execute(e: Event, operation: string): Function {
+        // var operation = operation.replace('(', '.call(o,');
         return (new Function('o', `let $event = this; with (o) return o.${operation};`)).bind(e);  // binds event as this and lets keyword $event be this so that object (o) can be passed in as first argument.
     }
     
     connect(receiver: any) {
         var { node, types } = this;
         
-        if (receiver instanceof Element) throw new Error('WTF?...');
         this.receiver = receiver;
         this.disconnect();
         types.forEach( (type) => node.addEventListener(type, this.handleEvent, true) );

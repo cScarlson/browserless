@@ -10,9 +10,9 @@
     }
     
     [id^="/dev/playground"] {
-        visibility: hidden;
+        opacity: 0;
         &:target {
-            visibility: visible;
+            animation: fadein 1s 500ms forwards;
         }
     }
     
@@ -21,4 +21,13 @@
         padding-top: 40px;
     }
     
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

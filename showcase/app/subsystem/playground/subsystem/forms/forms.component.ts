@@ -20,10 +20,17 @@ const forms = {
     text: 'Start typing',
     date: '2022-03-16',
     checkbox: false,
-    radio: { },
+    radio: -1,
     textarea: 'Type, use line-breaks, html...',
-    select: { },
+    select: -1,
     options,
+    multiple: '',
+    handleRadio(e: Event|any) {
+        console.log('.....', e.type, e.value);
+    },
+    handleMultiple(e: Event|any) {
+        console.log('----------', e.target.options[0].selected);
+    },
     handleSubmission(e: Event|any) {
         e.preventDefault();
     }
