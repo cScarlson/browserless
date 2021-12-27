@@ -28,9 +28,8 @@ class EventManager {
         return matches;
     }
     
-    static execute(e: Event, operation: string): Function {
-        // var operation = operation.replace('(', '.call(o,');
-        return (new Function('o', `let $event = this; with (o) return o.${operation};`)).bind(e);  // binds event as this and lets keyword $event be this so that object (o) can be passed in as first argument.
+    static execute(e: Event, operation: string, action: string): Function {
+        return (new Function('o', `let $event = this; with (o) if (o.${action}) return o.${operation};`)).bind(e);  // binds event as this and lets keyword $event be this so that object (o) can be passed in as first argument.
     }
     
     connect(receiver: any) {
@@ -72,8 +71,9 @@ class EventManager {
         var { attributes } = target;  // get all attributes (NamedNodeMap)
         var attr = attributes[name];  // retrieve attribute-node (Attr).
         var { value } = attr;  // access value from attribute-node.
-        var schema = { event: e, operation: value };
-        var details: TEvent = { event: e, type, target, path, name, value, schema };  // package details for publish
+        var [ full, action ] = /(.+)\(.*\)/.exec(value) || [ ];
+        var schema = { event: e, operation: value, action };
+        var details: TEvent = { event: e, type, target, path, name, value, action, schema };  // package details for publish
         
         this.publish(`event:*`, details);
         this.publish(`event:${type}`, details);
@@ -83,8 +83,8 @@ class EventManager {
         var { receiver } = this;
         var { detail } = e;
         var { event, type, target, path, name, value, schema } = detail;
-        var { event, operation } = schema;
-        var execute = EventManager.execute(event, operation);
+        var { event, operation, action } = schema;
+        var execute = EventManager.execute(event, operation, action);
         
         execute(receiver);
     };
@@ -93,11 +93,13 @@ class EventManager {
 
 function publish(channel: string, data?: any) {
     var e = new CustomEvent(channel, { detail: data });
-    networkbus.dispatchEvent(e)
+    networkbus.dispatchEvent(e);
 }
+
 function subscribe(channel: string, handler: Function) {
     networkbus.addEventListener(channel, handler as EventListener, false);
 }
+
 function unsubscribe(channel: string, handler: Function) {
     networkbus.removeEventListener(channel, handler as EventListener, false);
 }

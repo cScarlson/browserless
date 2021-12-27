@@ -24,12 +24,16 @@ const forms = {
     textarea: 'Type, use line-breaks, html...',
     select: -1,
     options,
-    multiple: '',
+    multiple: new Map(),
     handleRadio(e: Event|any) {
         console.log('.....', e.type, e.value);
     },
     handleMultiple(e: Event|any) {
-        console.log('----------', e.target.options[0].selected);
+        var { multiple } = this;
+        var { target } = e;
+        var { options } = target;
+        
+        for (let option of options) if (option.selected) multiple.set(option.value, option.value);
     },
     handleSubmission(e: Event|any) {
         e.preventDefault();

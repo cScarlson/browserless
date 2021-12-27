@@ -10,6 +10,7 @@ type TSelector = string|RegExp;
 type TSchema = {
     event: Event,
     operation: string,  // eg: f($event, x)
+    action: string,  // eg: f
 };
 
 type TEvent = {
@@ -20,6 +21,7 @@ type TEvent = {
     target: Element,
     schema: TSchema,
     value: string,  // eg: f($event, x)
+    action: string,  // eg: f
 };
 
 type TPropertyChangedDetail = {
