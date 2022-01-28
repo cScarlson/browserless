@@ -216,27 +216,46 @@ var expressions: any = {
         
         function handleChange(e: InputEvent) {
             var { target } = e;
-            var { [key]: data, type, tagName, selectionStart } = <any>target;
-            var element = <HTMLInputElement>target;
-            var selector = `[${key}="${data}"]`;
-            var handler = `handle:${tagName}:${type}`;
+            var { [key]: data } = <any>target;
             
             if (noautorender) return;
-            source['v:set'](property, data);
-            source['v:node'].querySelector(selector).replaceWith(element);  // preserves textareas' resize dimensions (for instance).
-            element.focus();
-            if (handler in expressions) expressions[handler](element, selectionStart);
+            source['v:set'](property, data);  // trigger rerender.
+            expressions['handle:ELEMENT:type']({ target, source, key });  // readapt after rerender.
         }
         
         return boot;
     },
     
-    [`handle:INPUT:text`](node: HTMLInputElement, position: number) {
-        node.selectionStart = position;
+    ['handle:ELEMENT:type']({ target, source, key }) {
+        var { [key]: data, type, tagName } = <any>target;
+        var { selectionStart: start, selectionEnd: end, style } = <any>target;
+        var { width, height } = style;
+        var selector = `[${key}="${data}"]`;
+        var handler = `handle:${tagName}:${type}`;
+        var element = source['v:node'].querySelector(selector);
+        var selection = { start, end };
+        var options = { selection, width, height };
+        
+        element.focus();
+        if (handler in expressions) expressions[handler](element, options);
     },
     
-    [`handle:TEXTAREA:textarea`](node: HTMLInputElement, position: number) {
-        node.selectionStart = position;
+    [`handle:INPUT:text`](node: HTMLInputElement, options: any) {
+        var { selection } = options;
+        var { start, end } = selection;
+        
+        node.selectionStart = start;
+        node.selectionEnd = end;
+    },
+    
+    [`handle:TEXTAREA:textarea`](node: HTMLTextAreaElement, options: any) {
+        var { selection, width, height } = options;
+        var { start, end } = selection;
+        
+        node.selectionStart = start;
+        node.selectionEnd = end;
+        node.style.width = width;
+        node.style.height = height;
     },
     
     [`handle:INPUT:date`](node: HTMLInputElement, position: number) {},

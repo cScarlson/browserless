@@ -1,6 +1,7 @@
 
 import template from './forms.component.html';
 
+const date = new Date();
 const options = [
     { id:  0, label: "Options A" },
     { id:  1, label: "Options B" },
@@ -17,23 +18,30 @@ const options = [
 
 const forms = {
     ['v:template']: template,
-    text: 'Start typing',
-    date: '2022-03-16',
-    checkbox: false,
-    radio: -1,
+    text: 'Start typing...',
+    date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+    checkbox: true,
+    radio: 1,
     textarea: 'Type, use line-breaks, html...',
-    select: -1,
+    select: 1,
     options,
-    multiple: new Map(),
+    $multiple: new Map([ [1, 1], [2, 2] ]),
+    get multiple() { return Array.from( this.$multiple.values() ) },
     handleRadio(e: Event|any) {
-        console.log('.....', e.type, e.value);
+        var { type, target } = e;
+        var { value } = target;
+        
+        this.radio = +value;
+        console.log('RADIO', value);
     },
     handleMultiple(e: Event|any) {
-        var { multiple } = this;
+        var { $multiple } = this;
         var { target } = e;
         var { options } = target;
         
-        for (let option of options) if (option.selected) multiple.set(option.value, option.value);
+        $multiple.clear();
+        for (let option of options) if (option.selected) $multiple.set(option.value, option.value);
+        console.log('SELECT[MULTIPLE]', this.$multiple.size);
     },
     handleSubmission(e: Event|any) {
         e.preventDefault();

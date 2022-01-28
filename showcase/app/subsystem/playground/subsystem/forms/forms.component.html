@@ -6,7 +6,7 @@
         <legend>textarea</legend>
         <label>
             <div>Value: ${textarea}</div>
-            <textarea [(value)]="textarea"></textarea>
+            <textarea [(value)]="textarea" style="min-width: 320px; min-height: 80px;"></textarea>
         </label>
     </fieldset>
     
@@ -20,10 +20,10 @@
             </select>
         </label>
         <label>
-            <div>select[multiple]: ${multiple.size}</div>
-            <select multiple (change)="handleMultiple($event)">
+            <div>select[multiple]: ${multiple.length}</div>
+            <select multiple (change)="handleMultiple($event)" style="min-height: 220px;">
                 <option [value]="-1" selected disabled>Please select an option...</option>
-                <option [value]="{option}.id" [selected]="multiple.has({option}.id)" *for="let [i, option] of options">${{option}.label}</option>
+                <option [value]="{option}.id" [selected]="$multiple.has({option}.id)" *for="let [i, option] of options">${{option}.label}</option>
             </select>
         </label>
     </fieldset>
@@ -47,7 +47,7 @@
             <br />
             <label *for="let [i, option] of options">
                 <div>${{option}.label}</div>
-                <input type="radio" name="radiogroups" [value]="{option}.id" [checked]="{option}.id === radio" (change)="handleRadio($event)" />
+                <input type="radio" name="radiogroups" [value]="{option}.id" [(checked)]="{option}.id === radio" (change)="handleRadio($event)" />
             </label>
         </label>
     </fieldset>
